@@ -36,6 +36,24 @@ def open_row(column):
             return row
     return -1 # returns -1 if column is full
 
+def check_horizontal(player, row, col):
+   return 
+
+def check_vertical(player, row, col):
+    return 
+
+def check_diagonal(player, row, col):
+    return
+
+def check_win(player):
+    for row in range(ROW_SIZE):
+        for col in range(BOARD_SIZE):
+            if board[row][col] == player:
+                if check_horizontal(player, row, col) or check_vertical(player, row, col) or check_diagonal(player, row, col):
+                    return True
+    return False
+
+
 def player_turn(player):
     if player == 1:
         player = p1
