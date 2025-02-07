@@ -59,7 +59,32 @@ def check_vertical(player, row, col):
     return False 
 
 def check_diagonal(player, row, col):
-    return
+    count = 0
+    # checks \ diagonal
+    # starts from (row, column) and goes down and to the right
+    for i in range(BOARD_SIZE):
+        if row + i < ROW_SIZE and col + i < BOARD_SIZE: 
+            if board[row + i][col + i] == player: # checks if the piece is the same as the player
+                count += 1 # add to count
+                if count == WINNING_LENGTH:
+                    return True
+            else:
+                count = 0
+        else: 
+            break
+    #checks / diagonal
+    #starts from (row, column) and goes up and to the right
+    for i in range(WINNING_LENGTH):
+        if row - i >= 0 and col + i < BOARD_SIZE:
+            if board[row - i][col + i] == player: # checks if the piece is the same as the player
+                count += 1 # add to count
+                if count == WINNING_LENGTH:
+                    return True
+            else:
+                count = 0
+        else:
+            break 
+    return False
 
 def check_win(player):
     for row in range(ROW_SIZE):
