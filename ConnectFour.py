@@ -4,13 +4,13 @@ WINNING_LENGTH = 4
 p1 = 'X'
 p2 = 'O'
 
-slots = [' 1', ' 2', ' 3', ' 4', ' 5', ' 6', ' 7']
-board = [[' ' for x in range(BOARD_SIZE + 1)] for y in range(ROW_SIZE)]
+slots = ['1 ', '2 ', '3 ', '4 ', '5 ', '6 ', '7 ']
+board = [['* ' for x in range(BOARD_SIZE)] for y in range(ROW_SIZE)]
 
 def print_board():
     print(" ".join(slots))
     for row in board:
-        print("* ".join(row))
+        print(" ".join(row))
 
 def set_player_character():
     global p1, p2
@@ -47,15 +47,21 @@ def player_turn(player):
     while column < 1 or column > 7:
         print("Invalid column number. Please enter a number between 1 and 7.")
         column = int(input("Enter the column number you would like to place your piece. "))
-    
-
+    if(open_row(column - 1) == -1):
+        print("column", column, "is full. ")
+        player_turn(player)
+    else:
+        row = open_row(column - 1)
+        board[row][column - 1] = player
+        print_board()
 
 def start_game():
     game_over = False
     print("Welcome to Connect Four!")
    # set_player_character()
     print_board()
-    #player_turn()
+    player_turn(1)
+
 
 
 start_game()
