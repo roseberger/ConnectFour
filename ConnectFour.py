@@ -30,6 +30,12 @@ def set_player_character():
             p2 = "O"
             print("Invalid character, you are O.")
 
+def open_row(column):
+    for row in range(ROW_SIZE):
+        if board[row][column] == '* ':
+            return row
+    return -1 # returns -1 if column is full
+
 def player_turn(player):
     if player == 1:
         player = p1
