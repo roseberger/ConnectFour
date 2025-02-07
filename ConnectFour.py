@@ -37,10 +37,26 @@ def open_row(column):
     return -1 # returns -1 if column is full
 
 def check_horizontal(player, row, col):
-   return 
+    count = 0 # number of consecutive pieces
+    for i in range(BOARD_SIZE): # loops through the row
+        if board[row][i] == player: # checks if the piece is the same as the player
+            count += 1 # increments count if piece is the same
+            if count == WINNING_LENGTH: # if count = 4 that means player has won
+                return True # returns True if player has won
+        else:
+            count = 0 #resets count if different piece is found
+    return False 
 
 def check_vertical(player, row, col):
-    return 
+    count = 0 # number of consecutive pieces
+    for i in range(BOARD_SIZE): # loops through the column
+        if board[i][col] == player: # checks if the piece is the same as the player
+            count += 1
+            if count == WINNING_LENGTH:
+                return True
+        else:
+            count = 0 # resets count if different piece is found
+    return False 
 
 def check_diagonal(player, row, col):
     return
