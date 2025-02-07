@@ -1,16 +1,16 @@
 BOARD_SIZE = 7
 ROW_SIZE = 6
 WINNING_LENGTH = 4
-p1 = 'X'
-p2 = 'O'
+p1 = 'X '
+p2 = 'O '
 
-slots = ['1 ', '2 ', '3 ', '4 ', '5 ', '6 ', '7 ']
+slots = ['1', '2', '3', '4', '5', '6', '7']
 board = [['* ' for x in range(BOARD_SIZE)] for y in range(ROW_SIZE)]
 
 def print_board():
     print(" ".join(slots))
     for row in board:
-        print(" ".join(row))
+        print("".join(row))
 
 def set_player_character():
     global p1, p2
@@ -31,7 +31,7 @@ def set_player_character():
             print("Invalid character, you are O.")
 
 def open_row(column):
-    for row in range(ROW_SIZE):
+    for row in range(ROW_SIZE-1, -1, -1):
         if board[row][column] == '* ':
             return row
     return -1 # returns -1 if column is full
