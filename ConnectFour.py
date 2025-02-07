@@ -97,30 +97,45 @@ def player_turn(player):
     else:
         current_player = p2
         print("Player two's turn.")
-    column = int(input("Enter the column number you would like to place your piece. "))
-    while column < 1 or column > 7:
+
+    # ensure an integer within range
+    while True:
+        column_input = input("Enter the column number you would like to place your piece (1-7): ")
+        if column_input.isdigit():  # Check if input consists of only digits
+            column = int(column_input)
+            if 1 <= column <= 7:
+                break
         print("Invalid column number. Please enter a number between 1 and 7.")
-        column = int(input("Enter the column number you would like to place your piece. "))
-    while(open_row(column - 1) == -1):
-        print(f"Column {column} is full.")
-        column = int(input("Enter a different column number (1-7): "))
-        while column < 1 or column > 7:
-            print("Invalid column number. Please enter a number between 1 and 7.")
-            column = int(input("Enter the column number you would like to place your piece (1-7): "))
-        
+
     row = open_row(column - 1)
+    while row == -1:
+        print(f"Column {column} is full.")
+        while True:
+            column_input = input("Enter a different column number (1-7): ")
+            if column_input.isdigit():
+                column = int(column_input)
+                if 1 <= column <= 7:
+                    break
+            print("Invalid column number. Please enter a number between 1 and 7.")
+
+        row = open_row(column - 1)
+
     board[row][column - 1] = current_player
     print_board()
+
     if check_win(current_player):
         print(f"Player {player} wins!")
-        return True # ends game is theres winner
+        return True  # Ends game if there's a winner
     else:
-        return False 
+        return False
+
 
 def start_game():
     game_over = False
     print("Welcome to Connect Four!")
+    print("Player 1 is X and Player 2 is O.")
     print_board()
+    print("Player 1 goes first")
     player = 1
     while not game_over:
         game_over = player_turn(player)
@@ -129,7 +144,14 @@ def start_game():
             print("It's a tie!")
             game_over = True
             break
-
-
+    play_again = input("Would you like to play again? (Y/N) ")
+    if play_again.upper() == 'Y':
+        for row in range(ROW_SIZE):
+            for col in range(BOARD_SIZE):
+                board[row][col] = '* '
+        start_game()
+    else:
+        print("Thanks for playing!")
+    
 
 start_game()
