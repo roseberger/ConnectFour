@@ -97,29 +97,44 @@ def check_win(player):
 
 def player_turn(player):
     if player == 1:
-        player = p1
+        current_player = p1
         print("Player one's turn.")
     else:
-        player = p2
+        current_player = p2
         print("Player two's turn.")
     column = int(input("Enter the column number you would like to place your piece. "))
     while column < 1 or column > 7:
         print("Invalid column number. Please enter a number between 1 and 7.")
         column = int(input("Enter the column number you would like to place your piece. "))
-    if(open_row(column - 1) == -1):
-        print("column", column, "is full. ")
-        player_turn(player)
+    while(open_row(column - 1) == -1):
+        print(f"Column {column} is full.")
+        column = int(input("Enter a different column number (1-7): "))
+        while column < 1 or column > 7:
+            print("Invalid column number. Please enter a number between 1 and 7.")
+            column = int(input("Enter the column number you would like to place your piece (1-7): "))
+        
+    row = open_row(column - 1)
+    board[row][column - 1] = current_player
+    print_board()
+    if check_win(current_player):
+        print(f"Player {current_player} wins!")
+        return True # ends game is theres winner
     else:
-        row = open_row(column - 1)
-        board[row][column - 1] = player
-        print_board()
+        return False 
 
 def start_game():
     game_over = False
     print("Welcome to Connect Four!")
    # set_player_character()
     print_board()
-    player_turn(1)
+    player = 1
+    while not game_over:
+        player_turn(player)
+        player = 2 if player == 1 else 1
+        if not any('* ' in row for row in board):
+            print("It's a tie!")
+            game_over = True
+            break
 
 
 
