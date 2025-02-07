@@ -12,24 +12,6 @@ def print_board():
     for row in board:
         print("".join(row))
 
-def set_player_character():
-    global p1, p2
-    change=input(("Player one you are X, would you like to change your character? Yes or No? "))
-    if change.upper() == "YES":
-        p1 = input("What character would you like to be? One letter only. ")
-        if p1 == " " or len(p1) > 1:
-            p1 = "X"
-            print("Invalid character, you are X.")
-    change=input(("Player two you are O, would you like to change your character? Yes or No? "))
-    if change.upper() == "YES":
-        p2 = input("What character would you like to be? One letter only. ")
-        if p2 == " " or len(p1) > 1:
-            p2 = "O"
-            print("Invalid character, you are O.")
-        if p1 == p2:
-            p2 = "O"
-            print("Invalid character, you are O.")
-
 def open_row(column):
     for row in range(ROW_SIZE-1, -1, -1):
         if board[row][column] == '* ':
@@ -49,7 +31,7 @@ def check_horizontal(player, row, col):
 
 def check_vertical(player, row, col):
     count = 0 # number of consecutive pieces
-    for i in range(BOARD_SIZE): # loops through the column
+    for i in range(ROW_SIZE): # loops through the column
         if board[i][col] == player: # checks if the piece is the same as the player
             count += 1
             if count == WINNING_LENGTH:
@@ -60,30 +42,44 @@ def check_vertical(player, row, col):
 
 def check_diagonal(player, row, col):
     count = 0
-    # checks \ diagonal
+    # checks \ diagonal botton-right
     # starts from (row, column) and goes down and to the right
     for i in range(BOARD_SIZE):
-        if row + i < ROW_SIZE and col + i < BOARD_SIZE: 
-            if board[row + i][col + i] == player: # checks if the piece is the same as the player
-                count += 1 # add to count
-                if count == WINNING_LENGTH:
-                    return True
-            else:
-                count = 0
+        if row + i < ROW_SIZE and col + i < BOARD_SIZE and board[row + i][col + i] == player: 
+            count += 1 # add to count
+            if count == WINNING_LENGTH:
+                return True
         else: 
             break
-    #checks / diagonal
-    #starts from (row, column) and goes up and to the right
+    
+    #  top-left \ diagonal 
+    count = 0
     for i in range(WINNING_LENGTH):
-        if row - i >= 0 and col + i < BOARD_SIZE:
-            if board[row - i][col + i] == player: # checks if the piece is the same as the player
-                count += 1 # add to count
-                if count == WINNING_LENGTH:
-                    return True
-            else:
-                count = 0
+        if row - i >= 0 and col - i >= 0 and board[row - i][col - i] == player:
+            count += 1
+            if count == WINNING_LENGTH:
+                return True
         else:
-            break 
+            break
+    #  top-right /
+    count = 0
+    for i in range(WINNING_LENGTH):
+        if row - i >= 0 and col + i < BOARD_SIZE and board[row - i][col + i] == player:
+            count += 1
+            if count == WINNING_LENGTH:
+                return True
+        else:
+            break
+
+    #  bottom-left /
+    count = 0
+    for i in range(WINNING_LENGTH):
+        if row + i < ROW_SIZE and col - i >= 0 and board[row + i][col - i] == player:
+            count += 1
+            if count == WINNING_LENGTH:
+                return True
+        else:
+            break
     return False
 
 def check_win(player):
@@ -93,7 +89,6 @@ def check_win(player):
                 if check_horizontal(player, row, col) or check_vertical(player, row, col) or check_diagonal(player, row, col):
                     return True
     return False
-
 
 def player_turn(player):
     if player == 1:
@@ -117,7 +112,7 @@ def player_turn(player):
     board[row][column - 1] = current_player
     print_board()
     if check_win(current_player):
-        print(f"Player {current_player} wins!")
+        print(f"Player {player} wins!")
         return True # ends game is theres winner
     else:
         return False 
@@ -125,11 +120,10 @@ def player_turn(player):
 def start_game():
     game_over = False
     print("Welcome to Connect Four!")
-   # set_player_character()
     print_board()
     player = 1
     while not game_over:
-        player_turn(player)
+        game_over = player_turn(player)
         player = 2 if player == 1 else 1
         if not any('* ' in row for row in board):
             print("It's a tie!")
